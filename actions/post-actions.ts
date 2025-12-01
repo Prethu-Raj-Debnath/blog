@@ -7,6 +7,19 @@ import { slugify } from "@/lib/utils";
 import { and, eq, ne } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
+import z from "zod";
+
+const postSchema = z.object({
+  title: z
+    .string()
+    .min(3, "Title must be at least 2 characters long")
+    .max(255, "Title must be less than 255 characters"),
+  description: z
+    .string()
+    .min(5, "Description must be at least 2 characters long")
+    .max(255, "Description must be less than 255 characters"),
+  content: z.string().min(10, "Description must be at least 2 characters long"),
+});
 
 export async function createPost(formData: FormData) {
   try {
@@ -27,7 +40,12 @@ export async function createPost(formData: FormData) {
     const description = formData.get("description") as string;
     const content = formData.get("content") as string;
 
-    // homework -> implement a extra validation check
+    const validate = postSchema.safeParse({ title, description, content });
+
+if (!validate.success) {
+  return { error: validate.error.issues[0].message };
+}
+
 
     //create the slug from post title
     const slug = slugify(title);
@@ -94,7 +112,8 @@ export async function updatePost(postId: number, formData: FormData) {
     const description = formData.get("description") as string;
     const content = formData.get("content") as string;
 
-    // homework -> implement a extra validation check
+    const validate = postSchema.safeParse({ title, description, content });
+
 
     const slug = slugify(title);
     const existingPost = await db.query.posts.findFirst({

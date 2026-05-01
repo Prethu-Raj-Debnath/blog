@@ -24,7 +24,7 @@ function PostContent({ post, isAuthor }: PostContentProps) {
       </CardHeader>
       <CardContent>
         <p className="text-muted-foreground text-lg mb-6">{post.description}</p>
-        <p className="text-black font-bold text-4xl mb-6">{post.content}</p>
+        <p className="text-black font-bold text-[24px] mb-6 dark:text-white">{post.content}</p>
       </CardContent>
       {isAuthor && (
         <CardFooter>

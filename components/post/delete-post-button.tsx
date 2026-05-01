@@ -37,6 +37,7 @@ function DeletePostButton({ postId }: DeletePostButtonProps) {
         onClick={handleDelete}
         variant="destructive"
         size="sm"
+        className="hover:bg-red-600 focus:ring-red-600 cursor-pointer"
       >
         <Trash2 className="h-4 w-4 mr-2" />
         {isDeleting ? "Deleting..." : "Delete"}

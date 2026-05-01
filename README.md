@@ -2,6 +2,7 @@
 
 A modern, full-stack blog platform built with Next.js, Drizzle ORM, and PostgreSQL. Features secure authentication, owner-only edit/delete controls, a rich post creation flow, and a clean responsive UI.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-blog--xi--coral--80.vercel.app-brightgreen?style=flat&logo=vercel)](https://blog-xi-coral-80.vercel.app)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
@@ -264,6 +265,10 @@ git push origin main
 
 5. **Deploy** 🎉
 
+### 🌐 Live Demo
+
+The app is deployed and live at: **[https://blog-xi-coral-80.vercel.app](https://blog-xi-coral-80.vercel.app)**
+
 ---
 
 ## 🔮 Future Enhancements
@@ -298,6 +303,7 @@ Contributions are welcome! Please follow these steps:
 
 - GitHub: [@Prethu-Raj-Debnath](https://github.com/Prethu-Raj-Debnath)
 - Project Link: https://github.com/Prethu-Raj-Debnath/blog
+- Live Demo: https://blog-xi-coral-80.vercel.app
 
 ---
 

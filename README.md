@@ -1,100 +1,155 @@
-# 📝 Blog Platform
+# DevBlog ✍️
 
-A full-stack blog application built with **Next.js App Router**, **TypeScript**, **Drizzle ORM**, and **Better Auth**. Designed as an academic project with a focus on type-safe data access, session-based authentication, and a clean server-component-first architecture.
+A modern, full-stack blog platform built with Next.js, Drizzle ORM, and PostgreSQL. Features secure authentication, owner-only edit/delete controls, a rich post creation flow, and a clean responsive UI.
 
----
-
-## 📸 Screenshots
-
-> **Home / Feed Page**
-> 
-> ![Home Page](./public/screenshots/home.png)
-> *(Replace with actual screenshot)*
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
 
-> **Single Post View**
-> 
-> ![Post Page](./public/screenshots/post.png)
-> *(Replace with actual screenshot)*
+## 📋 Table of Contents
 
----
-
-> **Create / Edit Post**
-> 
-> ![Editor](./public/screenshots/editor.png)
-> *(Replace with actual screenshot)*
-
----
-
-> **Login / Register Page**
-> 
-> ![Auth Page](./public/screenshots/auth.png)
-> *(Replace with actual screenshot)*
+- [Features](#-features)
+- [Demo & Screenshots](#-demo--screenshots)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Variables](#environment-variables)
+  - [Running Locally](#running-locally)
+- [API / Server Actions](#-api--server-actions)
+- [Deployment](#-deployment)
+- [Future Enhancements](#-future-enhancements)
+- [Contributing](#-contributing)
+- [Author](#-author)
 
 ---
 
 ## ✨ Features
 
-- 🔐 **Session-based Authentication** — Sign up, log in, and log out with Better Auth. Sessions are managed server-side and enforced via Next.js middleware.
-- 🛡️ **Protected Routes** — `middleware.ts` intercepts unauthenticated requests to write/edit pages and redirects them to login.
-- 📝 **Create & Read Posts** — Authenticated users can create blog posts; all visitors can browse and read published content.
-- 🗄️ **Type-Safe Database Access** — Drizzle ORM with PostgreSQL provides schema-first, fully typed queries with zero raw SQL strings.
-- 🧭 **App Router Architecture** — Built on Next.js 14+ App Router using server components, server actions, and layouts — no separate API layer needed.
-- 🧩 **Component Library** — UI built with [shadcn/ui](https://ui.shadcn.com/) components on top of Tailwind CSS.
-- 📦 **Global State** — Zustand store for lightweight client-side state management where needed.
+### 👥 User Features
+
+- **Authentication**: Secure signup and login powered by Better Auth
+- **Browse Blogs**: View all published blog posts on the home feed
+- **Read Posts**: Full-detail view for each blog post
+- **Create Blog**: Write and publish new posts via a dedicated form
+- **Owner Controls**: Edit or delete your own posts — buttons only visible to the post author
+- **Logout**: Secure session termination
+
+### 🎨 Additional Highlights
+
+- Fully responsive design (mobile-first)
+- Next.js App Router with server components and server actions
+- Type-safe database queries with Drizzle ORM
+- Global state management with Zustand
+- Shadcn/UI component library for a polished look
 
 ---
 
-## 🛠️ Tech Stack
+## 🎬 Demo & Screenshots
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 14+ (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS + shadcn/ui |
-| Database | PostgreSQL |
-| ORM | Drizzle ORM |
-| Auth | Better Auth |
-| State | Zustand |
-| Package Manager | pnpm |
+### Home Page
+
+![Home Page](screenshots/home.png)
+
+### Authentication
+
+| Login | Signup |
+|-------|--------|
+| ![Login](screenshots/login.png) | ![Signup](screenshots/signup.png) |
+
+### Blog Feed
+
+![All Blogs](screenshots/allblogs.png)
+
+### Create Blog
+
+![Create Blog](screenshots/createblog.png)
+
+### Read & Edit (Owner View)
+
+![Read and Edit](screenshots/read&edit(owner).png)
+
+### Logout
+
+![Logout](screenshots/logout.png)
 
 ---
 
-## 📁 Project Structure
+## 🛠 Tech Stack
+
+### Frontend
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: Shadcn/UI
+- **State Management**: Zustand
+
+### Backend
+
+- **Runtime**: Node.js
+- **Framework**: Next.js API layer (Server Actions)
+- **Database**: PostgreSQL with Drizzle ORM
+- **Authentication**: Better Auth
+- **Migrations**: Drizzle Kit
+
+### DevOps & Tools
+
+- **Version Control**: Git & GitHub
+- **Package Manager**: pnpm
+- **Linting**: ESLint
+
+---
+
+## 📂 Project Structure
 
 ```
 blog/
-├── app/                   # Next.js App Router pages and layouts
-│   ├── (auth)/            # Auth group — login, register pages
-│   ├── (main)/            # Main group — home, post detail, create
-│   └── layout.tsx         # Root layout
-├── actions/               # Server actions (form mutations, data writes)
-├── components/            # Reusable UI components (shadcn/ui + custom)
-├── drizzle/               # Drizzle migrations and schema files
-│   └── migrations/        # SQL migration history
-├── lib/                   # Shared utilities — db client, auth config, helpers
-├── src/                   # Additional source modules
-├── store/                 # Zustand store definitions
-├── public/                # Static assets
-├── auth-schema.ts         # Better Auth database schema extension
-├── drizzle.config.ts      # Drizzle Kit config (DB URL, dialect, output path)
-├── middleware.ts           # Route protection middleware
-└── next.config.ts         # Next.js configuration
+├── app/                        # Next.js App Router
+│   ├── (auth)/                 # Auth route group
+│   │   ├── login/              # Login page
+│   │   └── signup/             # Signup page
+│   ├── blog/                   # Blog route group
+│   │   ├── [id]/               # Dynamic blog detail page
+│   │   └── create/             # Create new blog page
+│   ├── layout.tsx              # Root layout
+│   ├── page.tsx                # Home / feed page
+│   └── globals.css             # Global styles
+│
+├── actions/                    # Next.js Server Actions
+│   ├── auth.actions.ts         # Login, signup, logout
+│   └── blog.actions.ts         # Create, update, delete blog
+│
+├── components/                 # Reusable UI components
+│   ├── Navbar.tsx
+│   ├── BlogCard.tsx
+│   ├── BlogForm.tsx
+│   └── ui/                     # Shadcn/UI primitives
+│
+├── drizzle/                    # Drizzle ORM migrations & schema
+│   ├── schema.ts
+│   └── migrations/
+│
+├── lib/                        # Utility & config modules
+│   ├── db.ts                   # Drizzle client
+│   └── auth.ts                 # Better Auth config
+│
+├── store/                      # Zustand global state
+│   └── useUserStore.ts
+│
+├── src/                        # Shared types / helpers
+│
+├── public/                     # Static assets
+│
+├── auth-schema.ts              # Better Auth DB schema
+├── drizzle.config.ts           # Drizzle Kit config
+├── middleware.ts               # Route protection middleware
+├── next.config.ts              # Next.js config
+├── tsconfig.json
+├── package.json
+└── README.md
 ```
-
----
-
-## ⚙️ How It Works
-
-### Authentication
-Better Auth handles session creation and validation. The `auth-schema.ts` file extends the default schema to store user and session records in PostgreSQL via Drizzle ORM. `middleware.ts` checks for a valid session on every request to protected routes, redirecting unauthenticated users before the page even renders.
-
-### Data Layer
-Drizzle ORM provides fully typed access to the PostgreSQL database. Schemas are defined in TypeScript, and migrations are managed using the Drizzle Kit CLI (`pnpm drizzle-kit push` or `migrate`). There are no raw SQL strings anywhere in the codebase.
-
-### Server Actions
-Write operations (creating posts, updating data) are handled via Next.js server actions inside the `actions/` folder. This means no manual API routes — form submissions call server functions directly, keeping the codebase lean.
 
 ---
 
@@ -102,43 +157,54 @@ Write operations (creating posts, updating data) are handled via Next.js server 
 
 ### Prerequisites
 
-- Node.js 18+
-- pnpm (`npm install -g pnpm`)
-- A PostgreSQL database (local or hosted — e.g. [Neon](https://neon.tech), [Supabase](https://supabase.com))
+Ensure you have the following installed:
 
-### 1. Clone the repository
+- **Node.js** >= 20.x
+- **pnpm** >= 10.x (or npm/yarn)
+- **PostgreSQL** (local or hosted, e.g. Neon / Supabase)
+
+### Installation
+
+1. **Clone the repository**
 
 ```bash
 git clone https://github.com/Prethu-Raj-Debnath/blog.git
 cd blog
 ```
 
-### 2. Install dependencies
+2. **Install dependencies**
 
 ```bash
 pnpm install
 ```
 
-### 3. Set up environment variables
+### Environment Variables
 
-Create a `.env.local` file in the root:
+Create a `.env` file in the root directory:
 
 ```env
 # Database
-DATABASE_URL=postgresql://user:password@host:5432/dbname
+DATABASE_URL=postgresql://username:password@host:5432/blog_db
 
 # Better Auth
-BETTER_AUTH_SECRET=your_secret_key
+BETTER_AUTH_SECRET=your_secret_here
 BETTER_AUTH_URL=http://localhost:3000
+
+# Next.js
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
-### 4. Run database migrations
+> **Security Note**: Never commit your `.env` file. It is already listed in `.gitignore`.
+
+### Running Locally
+
+1. **Push the database schema**
 
 ```bash
 pnpm drizzle-kit push
 ```
 
-### 5. Start the development server
+2. **Start the development server**
 
 ```bash
 pnpm dev
@@ -148,37 +214,103 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📜 Available Scripts
+## 📡 API / Server Actions
 
-| Command | Description |
-|---|---|
-| `pnpm dev` | Start development server |
-| `pnpm build` | Build for production |
-| `pnpm start` | Start production server |
-| `pnpm drizzle-kit push` | Push schema changes to DB |
-| `pnpm drizzle-kit studio` | Open Drizzle visual DB studio |
-| `pnpm lint` | Run ESLint |
+This project uses **Next.js Server Actions** instead of a traditional REST API. All data mutations happen server-side through typed action functions.
 
----
+### Auth Actions (`actions/auth.actions.ts`)
 
-## 🔮 Planned Improvements
+| Action | Description |
+|--------|-------------|
+| `signUp(data)` | Register a new user |
+| `signIn(data)` | Log in an existing user |
+| `signOut()` | Terminate the current session |
 
-- [ ] Rich text / Markdown editor for post creation
-- [ ] Image upload support (Cloudinary or S3)
-- [ ] Comment system on posts
-- [ ] User profile pages
-- [ ] Post categories and tags
-- [ ] Search functionality
+### Blog Actions (`actions/blog.actions.ts`)
 
----
+| Action | Description |
+|--------|-------------|
+| `createBlog(data)` | Create a new blog post |
+| `updateBlog(id, data)` | Update an existing post (owner only) |
+| `deleteBlog(id)` | Delete a post (owner only) |
+| `getAllBlogs()` | Fetch all published posts |
+| `getBlogById(id)` | Fetch a single post by ID |
 
-## 👤 Author
+### Route Protection (`middleware.ts`)
 
-**Prethu Raj Debnath**  
-[GitHub](https://github.com/Prethu-Raj-Debnath) · [LinkedIn](https://www.linkedin.com/in/prethu-raj-debnath-7a7961290) · prethuraj2002@gmail.com
+Protected routes (e.g. `/blog/create`) redirect unauthenticated users to `/login` via Next.js middleware.
 
 ---
 
-## 📄 License
+## 🚢 Deployment
 
-This project is open source and available under the [MIT License](LICENSE).
+### Deploy to Vercel
+
+1. **Push to GitHub**
+
+```bash
+git add .
+git commit -m "Ready for deployment"
+git push origin main
+```
+
+2. **Connect to Vercel**
+   - Import the GitHub repository on [vercel.com](https://vercel.com)
+   - Vercel auto-detects Next.js — no build command changes needed
+
+3. **Add Environment Variables** in the Vercel dashboard (same as `.env` file)
+
+4. **Run DB migration** once deployed by triggering `pnpm drizzle-kit push` or using a migration script
+
+5. **Deploy** 🎉
+
+---
+
+## 🔮 Future Enhancements
+
+- **Rich Text Editor**: Markdown or WYSIWYG editor for posts
+- **Tags & Categories**: Filter posts by topic
+- **Comments**: Threaded comments on blog posts
+- **Likes / Reactions**: Engagement features
+- **User Profiles**: Public author pages with post history
+- **Search**: Full-text search across posts
+- **Image Uploads**: Cover images per post via Cloudinary
+- **Dark Mode**: Theme toggle
+- **Pagination / Infinite Scroll**: For large post feeds
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 👨‍💻 Author
+
+**Prethu Raj Debnath**
+
+- GitHub: [@Prethu-Raj-Debnath](https://github.com/Prethu-Raj-Debnath)
+- Project Link: https://github.com/Prethu-Raj-Debnath/blog
+
+---
+
+## 🙏 Acknowledgments
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Drizzle ORM](https://orm.drizzle.team/)
+- [Better Auth](https://www.better-auth.com/)
+- [Shadcn/UI](https://ui.shadcn.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+---
+
+**If you found this project helpful, please consider giving it a ⭐!**
+
+Made with ❤️ by Prethu Raj Debnath
